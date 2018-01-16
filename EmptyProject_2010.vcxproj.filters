@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns:atg="http://atg.xbox.com" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{8e114980-c1a3-4ada-ad7c-83caadf5daeb}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="DXUT">
+      <UniqueIdentifier>{a43c5c25-0e86-4a20-b64a-883785ff74fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SharedBase">
+      <UniqueIdentifier>{a03e368f-7ba1-4733-867a-9a542c0914d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DXUT\Optional\directx.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\SharedBase\DXUT\Core\DXUT.cpp">
+      <Filter>DXUT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\DXUT\Core\DXUTDevice9.cpp">
+      <Filter>DXUT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\DXUT\Core\DXUTDevice11.cpp">
+      <Filter>DXUT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\DXUT\Core\DXUTmisc.cpp">
+      <Filter>DXUT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\BaseControl.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\CManipulationEventSink.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\DXWrapper.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\AspectRatioDefine.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\AppMgr.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\BaseInput.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\Console.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\DelayDeleteHelper.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\EasingCurve.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\EdgeGesture.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\EdgeRingControl.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\FSWatcher.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\HidFunctions.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\Registry.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\VideoHelper.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\WindowsHotkeyEmulator.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedBase\WinFS.cpp">
+      <Filter>SharedBase</Filter>
+    </ClCompile>
+    <ClCompile Include="LiteOn.cpp" />
+    <ClCompile Include="LiteOnViewPort.cpp" />
+    <ClCompile Include="FaceIcon.cpp" />
+    <ClCompile Include="MICCapture.cpp" />
+    <ClCompile Include="TeamTitle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\SharedBase\DXUT\Core\DXUT.h">
+      <Filter>DXUT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\DXUT\Core\DXUTDevice9.h">
+      <Filter>DXUT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\DXUT\Core\DXUTDevice11.h">
+      <Filter>DXUT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\DXUT\Core\DXUTmisc.h">
+      <Filter>DXUT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\BaseControl.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\CManipulationEventSink.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\DXWrapper.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\AspectRatioDefine.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\AppMgr.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\BaseInput.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\CharEncode.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\Console.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\DelayDeleteHelper.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\EasingCurve.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\Edge.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\EdgeGesture.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\EdgeLibISV.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\EdgeRingControl.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\FSWatcher.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\HidFunctions.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\Registry.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\SharedCommon.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\VideoHelper.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\WindowsHotkeyEmulator.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedBase\WinFS.h">
+      <Filter>SharedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="LiteOnViewPort.h" />
+    <ClInclude Include="FaceIcon.h" />
+    <ClInclude Include="MICCapture.h" />
+    <ClInclude Include="TeamTitle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CLInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </CLInclude>
+    <ResourceCompile Include="EmptyProject.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
