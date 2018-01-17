@@ -2,11 +2,7 @@
 
 #ifndef _CMICCAPTURE_
 #define _CMICCAPTURE_
-
-#include <mmdeviceapi.h>
-#include <endpointvolume.h>
-#include <functiondiscoverykeys_devpkey.h>
-
+#include "DXUT.h"
 // Timer ID and period (in milliseconds)
 #define ID_TIMER  1
 #define TIMER_PERIOD  125

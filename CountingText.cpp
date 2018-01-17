@@ -55,7 +55,8 @@ CCountingText::~CCountingText()
 	SAFE_RELEASE(m_pTextSloganBmp);
 }
 
-void CCountingText::Render(ID2D1DeviceContext*d2ddc) {
+void CCountingText::Render(ID2D1DeviceContext*d2ddc) 
+{
 	if (!m_bVisible || m_opacity == 0.0f)
 		return;
 	//set transform

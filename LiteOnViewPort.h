@@ -10,6 +10,7 @@
 #include "TeamTitle.h"
 #include "CountingText.h"
 #include "TimeCounting.h"
+#include "VolumeMeter.h"
 
 class CLiteOnViewPort;
 
@@ -46,6 +47,7 @@ private:
 	CTeamTitle* m_TeamTitle;
 	CCountingText* m_CountingText;
 	CTimeCounting* m_TimeCounting;
+	CVolumeMeter* m_VolumeMeter;
 };
 
 #endif

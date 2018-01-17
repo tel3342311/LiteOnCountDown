@@ -15,6 +15,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_TeamTitle(NULL)
 , m_CountingText(NULL)
 , m_TimeCounting(NULL)
+, m_VolumeMeter(NULL)
 {
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_1.png", &m_bg, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2.png", &m_bg_frame, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
@@ -46,6 +47,10 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_TimeCounting = new CTimeCounting(this);
 	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
 	m_childList.Add(m_TimeCounting);
+
+	m_VolumeMeter = new CVolumeMeter(this);
+	m_VolumeMeter->SetLocation(94.f, 90.f);
+	m_VolumeMeter->SetSize(1765, 552);
 }
 
 
@@ -96,6 +101,8 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 		d2ddc->DrawBitmap(m_bg);
 	if (m_bg_frame != NULL)
 		d2ddc->DrawBitmap(m_bg_frame);
+	if (m_VolumeMeter != NULL)
+		m_VolumeMeter->Render(d2ddc);
 	int idx = getCoinFlash();
 	if (m_coin_bg[idx] != NULL) 
 		d2ddc->DrawBitmap(m_coin_bg[idx]);

@@ -1,6 +1,7 @@
-#include "DXUT.h"
 #include "MICCapture.h"
-
+#include <mmdeviceapi.h>
+#include <endpointvolume.h>
+#include <functiondiscoverykeys_devpkey.h>
 
 CMICCapture::CMICCapture() : m_pEnumerator(NULL)
 , m_pDevice(NULL)

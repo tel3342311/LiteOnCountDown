@@ -419,6 +419,7 @@
     <ClCompile Include="MICCapture.cpp" />
     <ClCompile Include="TeamTitle.cpp" />
     <ClCompile Include="TimeCounting.cpp" />
+    <ClCompile Include="VolumeMeter.cpp" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
@@ -455,6 +456,7 @@
     <CLInclude Include="resource.h" />
     <ClInclude Include="TeamTitle.h" />
     <ClInclude Include="TimeCounting.h" />
+    <ClInclude Include="VolumeMeter.h" />
     <ResourceCompile Include="EmptyProject.rc" />
   </ItemGroup>
   <ItemGroup>
