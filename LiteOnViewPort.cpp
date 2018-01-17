@@ -14,6 +14,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_FaceIcon(NULL)
 , m_TeamTitle(NULL)
 , m_CountingText(NULL)
+, m_TimeCounting(NULL)
 {
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_1.png", &m_bg, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2.png", &m_bg_frame, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
@@ -41,6 +42,10 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_CountingText = new CCountingText(this);
 	m_CountingText->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
 	m_childList.Add(m_CountingText);
+
+	m_TimeCounting = new CTimeCounting(this);
+	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
+	m_childList.Add(m_TimeCounting);
 }
 
 
@@ -96,15 +101,18 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 		d2ddc->DrawBitmap(m_coin_bg[idx]);
 	if (m_balloon_bg != NULL)
 		d2ddc->DrawBitmap(m_balloon_bg);
-
-	if (m_FaceIcon != NULL)
-		m_FaceIcon->Render(d2ddc);
 	
 	if (m_TeamTitle != NULL)
 		m_TeamTitle->Render(d2ddc);
 
 	if (m_CountingText != NULL)
 		m_CountingText->Render(d2ddc);
+
+	if (m_FaceIcon != NULL)
+		m_FaceIcon->Render(d2ddc);
+
+	if (m_TimeCounting != NULL)
+		m_TimeCounting->Render(d2ddc);
 }
 
 bool CLiteOnViewPort::HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam)
@@ -150,42 +158,50 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 					   {
 					   case '1':
 					   {
-									m_TeamTitle->setTeamIdx(0);
-									return true;
+								   m_TeamTitle->setTeamIdx(0);
+								   m_CountingText->setTeamIdx(0);
+								   return true;
 					   }
 					   case '2':
 					   {
-									m_TeamTitle->setTeamIdx(1);
-									return true;
+								   m_TeamTitle->setTeamIdx(1);
+								   m_CountingText->setTeamIdx(1);
+								   return true;
 					   }
 					   case '3':
 					   {
-									m_TeamTitle->setTeamIdx(2);
-									return true;
+								   m_TeamTitle->setTeamIdx(2);
+								   m_CountingText->setTeamIdx(2);
+								   return true;
 					   }
 					   case '4':
 					   {
-									m_TeamTitle->setTeamIdx(3);
-									return true;
+								   m_TeamTitle->setTeamIdx(3);
+								   m_CountingText->setTeamIdx(3);
+								   return true;
 					   }
 					   case '5':
 					   {
-									m_TeamTitle->setTeamIdx(4);
-									return true;
+								   m_TeamTitle->setTeamIdx(4);
+								   m_CountingText->setTeamIdx(4);
+								   return true;
 					   }
 					   case '6':
 					   {
-									m_TeamTitle->setTeamIdx(5);
-									return true;
+								   m_TeamTitle->setTeamIdx(5);
+								   m_CountingText->setTeamIdx(5);
+								   return true;
 					   }
 					   case '7':
 					   {
-									m_TeamTitle->setTeamIdx(6);
-									return true;
+								   m_TeamTitle->setTeamIdx(6);
+								   m_CountingText->setTeamIdx(6);
+								   return true;
 					   }
 					   case '8':
 					   {
 								   m_TeamTitle->setTeamIdx(7);
+								   m_CountingText->setTeamIdx(7);
 								   return true;
 					   }
 					   case VK_PRIOR:

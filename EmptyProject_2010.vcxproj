@@ -418,6 +418,7 @@
     <ClCompile Include="LiteOnViewPort.cpp" />
     <ClCompile Include="MICCapture.cpp" />
     <ClCompile Include="TeamTitle.cpp" />
+    <ClCompile Include="TimeCounting.cpp" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
@@ -453,6 +454,7 @@
     <ClInclude Include="MICCapture.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="TeamTitle.h" />
+    <ClInclude Include="TimeCounting.h" />
     <ResourceCompile Include="EmptyProject.rc" />
   </ItemGroup>
   <ItemGroup>

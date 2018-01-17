@@ -87,6 +87,7 @@
     <ClCompile Include="MICCapture.cpp" />
     <ClCompile Include="TeamTitle.cpp" />
     <ClCompile Include="CountingText.cpp" />
+    <ClCompile Include="TimeCounting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SharedBase\DXUT\Core\DXUT.h">
@@ -169,6 +170,7 @@
     <ClInclude Include="MICCapture.h" />
     <ClInclude Include="TeamTitle.h" />
     <ClInclude Include="CountingText.h" />
+    <ClInclude Include="TimeCounting.h" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">

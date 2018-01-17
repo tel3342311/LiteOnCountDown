@@ -9,6 +9,7 @@
 #include "FaceIcon.h"
 #include "TeamTitle.h"
 #include "CountingText.h"
+#include "TimeCounting.h"
 
 class CLiteOnViewPort;
 
@@ -44,6 +45,7 @@ private:
 	CFaceIcon* m_FaceIcon;
 	CTeamTitle* m_TeamTitle;
 	CCountingText* m_CountingText;
+	CTimeCounting* m_TimeCounting;
 };
 
 #endif

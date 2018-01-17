@@ -26,6 +26,7 @@ private:
 	ID2D1SolidColorBrush* m_pTextBrush;
 	ID2D1SolidColorBrush* m_pTextBlueBrush;
 	int m_nTeamIdx;
+	DWRITE_TEXT_METRICS m_dtm;
 };
 
 #endif

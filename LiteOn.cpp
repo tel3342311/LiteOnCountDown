@@ -213,6 +213,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	//CAppMgr::SetNonActivateWindow(DXUTGetHWND());
 	//CAppMgr::SetLayerWindow(DXUTGetHWND(), true);
 	//SetLayeredWindowAttributes(DXUTGetHWND(), 0, BYTE(0), LWA_ALPHA);
+	
 	//manipulation lib
 	CManipulationEventSink::m_majorInstance = new CManipulationEventSink;
 	CManipulationEventSink::m_majorInstance->Init();
@@ -231,7 +232,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	CDXWrapper::InitExFunction(4);
 	CLiteOn::m_liteOnViewPort = new CLiteOnViewPort;
 	CLiteOn::m_liteOnViewPort->SetLocation(0, 0);
-	CLiteOn::m_liteOnViewPort->SetSize(CResolution::m_imageResolutionX, CResolution::m_imageResolutionY);
+	CLiteOn::m_liteOnViewPort->SetSize(CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	//if(CResolution::m_screenResolutionX < CResolution::m_screenResolutionY)
 	//initial idle monitor
 	//CIdleMonitor::EnterIdleCount();
