@@ -54,8 +54,9 @@ void CTeamTitle::setTeamIdx(int idx)
 							L"images\\main_img_team-6.png", 
 							L"images\\main_img_team-7.png", 
 							L"images\\main_img_team-8.png" };
-	if (idx >= 0 && idx < TEAM_COUNT) 
+	if (idx >= 0 && idx < TEAM_COUNT && m_nTeamIdx != idx)
 	{
 		CDXWrapper::LoadImageFromFileAsyncEx((LPWSTR)imagePath[idx].c_str(), &m_pTitleBmp, CResolution::m_screenResolutionX / 1.37f, CResolution::m_screenResolutionY / 4.59f);
 	}
+	m_nTeamIdx = idx;
 }

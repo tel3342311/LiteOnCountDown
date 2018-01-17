@@ -13,6 +13,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_balloon_bg(NULL)
 , m_FaceIcon(NULL)
 , m_TeamTitle(NULL)
+, m_CountingText(NULL)
 {
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_1.png", &m_bg, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2.png", &m_bg_frame, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
@@ -35,9 +36,11 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_TeamTitle = new CTeamTitle(this);
 	m_TeamTitle->SetSize(CResolution::m_screenResolutionX / 1.37f, CResolution::m_screenResolutionY / 4.59f);
 	m_TeamTitle->SetLocation((CResolution::m_screenResolutionX - CResolution::m_screenResolutionX / 1.37f) / 2.f, 0.f);
-	//m_TeamTitle->setTeamIdx(0);
 	m_childList.Add(m_TeamTitle);
 
+	m_CountingText = new CCountingText(this);
+	m_CountingText->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
+	m_childList.Add(m_CountingText);
 }
 
 
@@ -99,6 +102,9 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 	
 	if (m_TeamTitle != NULL)
 		m_TeamTitle->Render(d2ddc);
+
+	if (m_CountingText != NULL)
+		m_CountingText->Render(d2ddc);
 }
 
 bool CLiteOnViewPort::HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam)

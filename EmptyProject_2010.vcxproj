@@ -412,6 +412,7 @@
     <ClCompile Include="..\SharedBase\VideoHelper.cpp" />
     <ClCompile Include="..\SharedBase\WindowsHotkeyEmulator.cpp" />
     <ClCompile Include="..\SharedBase\WinFS.cpp" />
+    <ClCompile Include="CountingText.cpp" />
     <ClCompile Include="FaceIcon.cpp" />
     <ClCompile Include="LiteOn.cpp" />
     <ClCompile Include="LiteOnViewPort.cpp" />
@@ -446,6 +447,7 @@
     <ClInclude Include="..\SharedBase\VideoHelper.h" />
     <ClInclude Include="..\SharedBase\WindowsHotkeyEmulator.h" />
     <ClInclude Include="..\SharedBase\WinFS.h" />
+    <ClInclude Include="CountingText.h" />
     <ClInclude Include="FaceIcon.h" />
     <ClInclude Include="LiteOnViewPort.h" />
     <ClInclude Include="MICCapture.h" />

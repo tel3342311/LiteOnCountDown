@@ -8,6 +8,7 @@
 #include "DXWrapper.h"
 #include "FaceIcon.h"
 #include "TeamTitle.h"
+#include "CountingText.h"
 
 class CLiteOnViewPort;
 
@@ -42,6 +43,7 @@ private:
 	ID2D1Bitmap* m_balloon_bg;
 	CFaceIcon* m_FaceIcon;
 	CTeamTitle* m_TeamTitle;
+	CCountingText* m_CountingText;
 };
 
 #endif

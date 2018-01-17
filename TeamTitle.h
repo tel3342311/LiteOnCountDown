@@ -1,10 +1,11 @@
 #pragma once
-#include "BaseControl.h"
-#include "AspectRatioDefine.h"
-#include "DXWrapper.h"
 
 #ifndef _TEAMTITLE_
 #define _TEAMTITLE_
+
+#include "BaseControl.h"
+#include "AspectRatioDefine.h"
+#include "DXWrapper.h"
 
 #define TEAM_COUNT 8
 class CTeamTitle :
