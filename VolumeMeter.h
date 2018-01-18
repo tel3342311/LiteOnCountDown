@@ -4,7 +4,8 @@
 
 #include "BaseControl.h"
 #include "AspectRatioDefine.h"
-#include "MICCapture.h"
+
+extern class CMICCapture;
 
 class CVolumeMeter : public CControlBase
 {
@@ -18,7 +19,7 @@ private:
 	CMICCapture* m_pMICCapture;
 	ID2D1GradientStopCollection* m_pGradient_stop_collection;
 	ID2D1LinearGradientBrush* m_pLinearGradientBrush;
-
+	ID2D1LinearGradientBrush* GetGradientBrush(float ratio);
 };
 
 #endif
