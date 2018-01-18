@@ -27,6 +27,7 @@ public:
 	~CFaceIcon();
 	//override function
 	virtual void Render(ID2D1DeviceContext*);
+	void SetFaceState(FACEMODE mode);
 protected:
 	ID2D1Bitmap** m_pFaceIcon;
 };

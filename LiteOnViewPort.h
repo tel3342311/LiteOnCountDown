@@ -33,6 +33,11 @@ public:
 	virtual bool HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam);
 	virtual bool HandlePoint(PTOUCHINPUT ptList, int ptCount);
 	virtual bool HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	void OnChangeTeam(int idx);
+	void OnStartCounting();
+	void OnFinishCounting();
+	void OnVolumeEvent(float fPeak);
+	void OnFinishTextCounting();
 private:
 	bool m_bPressed;
 	//Rainbow bg

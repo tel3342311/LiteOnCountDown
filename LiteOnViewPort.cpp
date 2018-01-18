@@ -51,6 +51,10 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_VolumeMeter = new CVolumeMeter(this);
 	m_VolumeMeter->SetLocation(CResolution::m_screenResolutionX / 20.64f, CResolution::m_screenResolutionY / 12.13f);
 	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
+
+	//Event hook
+	__hook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
+	__hook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
 }
 
 
@@ -63,9 +67,52 @@ CLiteOnViewPort::~CLiteOnViewPort()
 	SAFE_RELEASE(m_coin_bg[2]);
 	SAFE_RELEASE(m_coin_bg[3]);
 	SAFE_RELEASE(m_coin_bg[4]);
+	SAFE_DELETE(m_coin_bg);
 	SAFE_RELEASE(m_balloon_bg);
 	for (int i = 0; i < m_childList.GetSize(); i++)
 		delete m_childList[i];
+
+	__unhook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
+	__unhook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
+
+
+}
+static int countingFinish = 0;
+
+void CLiteOnViewPort::OnVolumeEvent(float fPeak) 
+{
+	if (fPeak < 0.005f) 
+	{
+		m_FaceIcon->SetFaceState(START);
+	}
+	else if (fPeak < 0.2f)
+	{
+		m_FaceIcon->SetFaceState(FINISH);
+		countingFinish++;
+		if (countingFinish > 10) 
+		{
+			OnFinishCounting();
+			countingFinish = 0;
+		}
+
+	}
+	else if (fPeak < 0.4f)
+	{
+		m_FaceIcon->SetFaceState(PROGRESS_3);
+	}
+	else if (fPeak < 0.6f)
+	{
+		m_FaceIcon->SetFaceState(PROGRESS_2);
+	}
+	else if (fPeak < 0.8f)
+	{
+		m_FaceIcon->SetFaceState(PROGRESS_1);
+	}
+}
+
+void CLiteOnViewPort::OnFinishTextCounting()
+{
+	m_FaceIcon->SetFaceState(COUNTDOWN);
 }
 
 bool CLiteOnViewPort::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -148,91 +195,55 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	switch (uMsg)
 	{
-	case WM_CHAR:
-	{
-					switch ((WCHAR)wParam)
-					{
-					case VK_RETURN:
-					{
-						break;
-					}
-					default:
-						break;
-					}
-	}
+		case WM_CHAR:
+		{
+			switch ((WCHAR)wParam)
+			{
+			case VK_RETURN:
+			{
+				OnStartCounting();
+				break;
+			}
+			default:
+				break;
+			}
+		}
 		break;
 
 	case WM_KEYDOWN:
 	{
-					   switch (wParam)
-					   {
-					   case '1':
-					   {
-								   m_TeamTitle->setTeamIdx(0);
-								   m_CountingText->setTeamIdx(0);
-								   return true;
-					   }
-					   case '2':
-					   {
-								   m_TeamTitle->setTeamIdx(1);
-								   m_CountingText->setTeamIdx(1);
-								   return true;
-					   }
-					   case '3':
-					   {
-								   m_TeamTitle->setTeamIdx(2);
-								   m_CountingText->setTeamIdx(2);
-								   return true;
-					   }
-					   case '4':
-					   {
-								   m_TeamTitle->setTeamIdx(3);
-								   m_CountingText->setTeamIdx(3);
-								   return true;
-					   }
-					   case '5':
-					   {
-								   m_TeamTitle->setTeamIdx(4);
-								   m_CountingText->setTeamIdx(4);
-								   return true;
-					   }
-					   case '6':
-					   {
-								   m_TeamTitle->setTeamIdx(5);
-								   m_CountingText->setTeamIdx(5);
-								   return true;
-					   }
-					   case '7':
-					   {
-								   m_TeamTitle->setTeamIdx(6);
-								   m_CountingText->setTeamIdx(6);
-								   return true;
-					   }
-					   case '8':
-					   {
-								   m_TeamTitle->setTeamIdx(7);
-								   m_CountingText->setTeamIdx(7);
-								   return true;
-					   }
-					   case VK_PRIOR:
-					   {
-										return true;
-					   }
-						   break;
-					   case VK_NEXT:
-					   {
-									   return true;
-					   }
-						   break;
-					   case VK_UP:
-					   {
-					   }
-						   break;
-					   case VK_DOWN:
-					   {
-					   }
-						   break;
-					   }
+		switch (wParam)
+		{
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		{
+					OnChangeTeam(wParam - 0x31);
+		}
+		case VK_PRIOR:
+		{
+						return true;
+		}
+			break;
+		case VK_NEXT:
+		{
+						return true;
+		}
+			break;
+		case VK_UP:
+		{
+		}
+			break;
+		case VK_DOWN:
+		{
+		}
+			break;
+		}
 	}
 		break;
 	default:
@@ -240,6 +251,7 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	return false;
 }
+
 bool CLiteOnViewPort::HandlePoint(PTOUCHINPUT ptList, int ptCount)
 {
 	if (!m_bVisible || !m_bEnabled || m_opacity == 0.0f)
@@ -287,6 +299,34 @@ bool CLiteOnViewPort::HandlePoint(PTOUCHINPUT ptList, int ptCount)
 	}
 
 	return false;
+}
+
+void CLiteOnViewPort::OnChangeTeam(int idx)
+{
+	m_VolumeMeter->m_bVisible = false;
+	m_TimeCounting->m_bVisible = false;
+	m_TeamTitle->setTeamIdx(idx);
+	m_CountingText->m_bVisible = true;
+	m_CountingText->setTeamIdx(idx);
+	m_FaceIcon->SetFaceState(PREPARE);
+}
+
+void CLiteOnViewPort::OnStartCounting()
+{
+	m_CountingText->m_bVisible = false;
+	
+	m_VolumeMeter->m_bVisible = true;
+	m_VolumeMeter->SetFinish(false);
+	
+	m_TimeCounting->m_bVisible = true;
+	m_TimeCounting->StartCounting();
+}
+
+void CLiteOnViewPort::OnFinishCounting()
+{
+	m_VolumeMeter->SetFinish(true);
+
+	m_TimeCounting->m_bVisible = false;
 }
 
 static float Opacity = 0.f;

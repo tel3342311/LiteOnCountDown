@@ -45,7 +45,7 @@ void CTeamTitle::Render(ID2D1DeviceContext*d2ddc) {
 
 void CTeamTitle::setTeamIdx(int idx) 
 {
-	SAFE_RELEASE(m_pTitleBmp);
+	
 	tstring imagePath[] = { L"images\\main_img_team-1.png", 
 							L"images\\main_img_team-2.png",
 							L"images\\main_img_team-3.png", 
@@ -56,6 +56,7 @@ void CTeamTitle::setTeamIdx(int idx)
 							L"images\\main_img_team-8.png" };
 	if (idx >= 0 && idx < TEAM_COUNT && m_nTeamIdx != idx)
 	{
+		SAFE_RELEASE(m_pTitleBmp);
 		CDXWrapper::LoadImageFromFileAsyncEx((LPWSTR)imagePath[idx].c_str(), &m_pTitleBmp, CResolution::m_screenResolutionX / 1.37f, CResolution::m_screenResolutionY / 4.59f);
 	}
 	m_nTeamIdx = idx;

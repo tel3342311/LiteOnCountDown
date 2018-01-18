@@ -82,10 +82,16 @@ void CCountingText::Render(ID2D1DeviceContext*d2ddc)
 		d2ddc->DrawTextLayout(D2D1::Point2F(), m_pSloganLayout, m_pTextBrush);
 	if (m_pTextSloganBmp != NULL)
 	{
+		float current_width = getSloganGradient(m_dtm.width);
 		d2ddc->SetAntialiasMode(D2D1_ANTIALIAS_MODE_ALIASED);
 		d2ddc->FillOpacityMask(
-			m_pTextSloganBmp, m_pTextBlueBrush, D2D1_OPACITY_MASK_CONTENT_TEXT_NATURAL, NULL, &D2D1::RectF(0.f, 0.f, getSloganGradient(m_dtm.width), m_dtm.height));
+			m_pTextSloganBmp, m_pTextBlueBrush, D2D1_OPACITY_MASK_CONTENT_TEXT_NATURAL, NULL, &D2D1::RectF(0.f, 0.f, current_width, m_dtm.height));
 		d2ddc->SetAntialiasMode(D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
+		if (current_width == m_dtm.width) 
+		{
+			__raise ReadyEvent();
+		}
 	}
 }
 
@@ -97,12 +103,12 @@ void CCountingText::setTeamIdx(int idx)
 	IDWriteFactory*_dwFac = CDXWrapper::GetDWriteFactory();
 	IDWriteTextFormat*_textFormat = NULL;
 	_dwFac->CreateTextFormat(
-		L"Segoe UI",
+		L"Microsoft JhengHei",
 		NULL,
-		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_WEIGHT_SEMI_BOLD,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		40.0f,
+		62.0f,
 		L"",
 		&_textFormat);
 	_textFormat->SetTextAlignment(

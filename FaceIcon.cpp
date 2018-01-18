@@ -52,3 +52,8 @@ void CFaceIcon::Render(ID2D1DeviceContext*d2ddc)
 	if (m_pFaceIcon[g_dragMode] != NULL)
 		d2ddc->DrawBitmap(m_pFaceIcon[g_dragMode]);
 }
+
+void CFaceIcon::SetFaceState(FACEMODE mode) 
+{
+	g_dragMode = mode;
+}

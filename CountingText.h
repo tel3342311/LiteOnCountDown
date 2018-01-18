@@ -16,7 +16,8 @@ public:
 	//override function
 	virtual void Render(ID2D1DeviceContext*);
 	void setTeamIdx(int idx);
-
+	//send Ready notification
+	__event void ReadyEvent();
 private:
 	ID2D1LinearGradientBrush* getBrush(float fIdx);
 	IDWriteTextLayout* m_pSloganLayout;

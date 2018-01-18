@@ -24,7 +24,6 @@ CTimeCounting::CTimeCounting(CControlBase*parent) : CControlBase(parent)
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number9.png", &m_ppDigitBitmap[9], CResolution::m_screenResolutionX / 7.5, CResolution::m_screenResolutionY / 4.3);
 
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number dot.png", &m_pSemiColon, CResolution::m_screenResolutionX / 7.5, CResolution::m_screenResolutionY / 4.3);
-	StartCounting();
 }
 
 
@@ -96,5 +95,4 @@ void CTimeCounting::UpdateDigit()
 	m_pDigit[1] = (int)sec % 10;
 	m_pDigit[2] = (int)(sec * 10.f) % 10;
 	m_pDigit[3] = (int)(sec * 100.f) % 10;
-
 }
