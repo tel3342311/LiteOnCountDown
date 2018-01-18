@@ -49,8 +49,8 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_childList.Add(m_TimeCounting);
 
 	m_VolumeMeter = new CVolumeMeter(this);
-	m_VolumeMeter->SetLocation(94.f, 90.f);
-	m_VolumeMeter->SetSize(1765, 552);
+	m_VolumeMeter->SetLocation(CResolution::m_screenResolutionX / 20.64f, CResolution::m_screenResolutionY / 12.13f);
+	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
 }
 
 
@@ -101,8 +101,10 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 		d2ddc->DrawBitmap(m_bg);
 	if (m_bg_frame != NULL)
 		d2ddc->DrawBitmap(m_bg_frame);
+
 	if (m_VolumeMeter != NULL)
 		m_VolumeMeter->Render(d2ddc);
+
 	int idx = getCoinFlash();
 	if (m_coin_bg[idx] != NULL) 
 		d2ddc->DrawBitmap(m_coin_bg[idx]);
@@ -120,6 +122,7 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 
 	if (m_TimeCounting != NULL)
 		m_TimeCounting->Render(d2ddc);
+
 }
 
 bool CLiteOnViewPort::HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam)
