@@ -108,7 +108,7 @@ void CCountingText::setTeamIdx(int idx)
 		DWRITE_FONT_WEIGHT_SEMI_BOLD,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		62.0f,
+		40.0f,
 		L"",
 		&_textFormat);
 	_textFormat->SetTextAlignment(

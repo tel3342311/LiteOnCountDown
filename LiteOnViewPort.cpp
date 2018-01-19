@@ -60,6 +60,9 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 
 CLiteOnViewPort::~CLiteOnViewPort()
 {
+	__unhook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
+	__unhook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
+
 	SAFE_RELEASE(m_bg);
 	SAFE_RELEASE(m_bg_frame);
 	SAFE_RELEASE(m_coin_bg[0]);
@@ -71,11 +74,6 @@ CLiteOnViewPort::~CLiteOnViewPort()
 	SAFE_RELEASE(m_balloon_bg);
 	for (int i = 0; i < m_childList.GetSize(); i++)
 		delete m_childList[i];
-
-	__unhook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
-	__unhook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
-
-
 }
 static int countingFinish = 0;
 
@@ -89,7 +87,7 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 	{
 		m_FaceIcon->SetFaceState(FINISH);
 		countingFinish++;
-		if (countingFinish > 10) 
+		if (countingFinish > 30) 
 		{
 			OnFinishCounting();
 			countingFinish = 0;
@@ -99,14 +97,17 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 	else if (fPeak < 0.4f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_3);
+		countingFinish = 0;
 	}
 	else if (fPeak < 0.6f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_2);
+		countingFinish = 0;
 	}
 	else if (fPeak < 0.8f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_1);
+		countingFinish = 0;
 	}
 }
 
