@@ -37,19 +37,16 @@ CVolumeMeter::CVolumeMeter(CControlBase*parent) : CControlBase(parent)
 		&m_pGradient_stop_collection
 		);
 
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_img_end.png", &m_pFinishBmp, CResolution::m_screenResolutionX / 2.44f, CResolution::m_screenResolutionY / 3.37f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_img_end.png", &m_pFinishBmp);
 
 	m_ppFlameBg = new ID2D1Bitmap*[4];
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 2; i++) {
 		m_ppFlameBg[i] = NULL;
 	}
 
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-1.png", &m_ppFlameBg[0], CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-2.png", &m_ppFlameBg[1], CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-3.png", &m_ppFlameBg[2], CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-4.png", &m_ppFlameBg[3], CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
-
-	
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-1.png", &m_ppFlameBg[0]);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-2.png", &m_ppFlameBg[1]);
+		
 	CLog::Init(_T("Log.txt"));
 }
 

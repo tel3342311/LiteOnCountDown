@@ -18,39 +18,36 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_VolumeMeter(NULL)
 {
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_1.png", &m_bg, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2.png", &m_bg_frame, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	m_coin_bg = new ID2D1Bitmap*[5];
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		m_coin_bg[i] = NULL;
 	}
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_3-1.png", &m_coin_bg[0], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_3-2.png", &m_coin_bg[1], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_3-3.png", &m_coin_bg[2], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_3-4.png", &m_coin_bg[3], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_3-5.png", &m_coin_bg[4], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_4.png", &m_balloon_bg, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2-1.png", &m_coin_bg[0], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2-2.png", &m_coin_bg[1], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2-3.png", &m_coin_bg[2], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2-4.png", &m_coin_bg[3], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 
 	m_FaceIcon = new CFaceIcon(this);
 	m_FaceIcon->SetSize(CResolution::m_screenResolutionX / 3.54f, CResolution::m_screenResolutionX / 3.54f);
-	m_FaceIcon->SetLocation(CResolution::m_screenResolutionX - CResolution::m_screenResolutionX / 3.54f, (CResolution::m_screenResolutionY - CResolution::m_screenResolutionX / 3.54f) / 2.f);
+	m_FaceIcon->SetLocation(0.f, 120.f);
 	m_childList.Add(m_FaceIcon);
 
 	m_TeamTitle = new CTeamTitle(this);
 	m_TeamTitle->SetSize(CResolution::m_screenResolutionX / 1.37f, CResolution::m_screenResolutionY / 4.59f);
-	m_TeamTitle->SetLocation((CResolution::m_screenResolutionX - CResolution::m_screenResolutionX / 1.37f) / 2.f, 0.f);
+	m_TeamTitle->SetLocation((CResolution::m_screenResolutionX - CResolution::m_screenResolutionX / 1.37f), 0.f);
 	m_childList.Add(m_TeamTitle);
 
 	m_CountingText = new CCountingText(this);
 	m_CountingText->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
 	m_childList.Add(m_CountingText);
-
+	
 	m_TimeCounting = new CTimeCounting(this);
-	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
+	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 2.56f, CResolution::m_screenResolutionY / 4.59f);
 	m_childList.Add(m_TimeCounting);
 
 	m_VolumeMeter = new CVolumeMeter(this);
-	m_VolumeMeter->SetLocation(CResolution::m_screenResolutionX / 20.64f, CResolution::m_screenResolutionY / 12.13f);
-	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
+	m_VolumeMeter->SetLocation(0.f, CResolution::m_screenResolutionY / 5.f);
+	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX, CResolution::m_screenResolutionY / 2.77f);
 	m_childList.Add(m_VolumeMeter);
 
 	//Event hook
@@ -70,9 +67,7 @@ CLiteOnViewPort::~CLiteOnViewPort()
 	SAFE_RELEASE(m_coin_bg[1]);
 	SAFE_RELEASE(m_coin_bg[2]);
 	SAFE_RELEASE(m_coin_bg[3]);
-	SAFE_RELEASE(m_coin_bg[4]);
 	SAFE_DELETE(m_coin_bg);
-	SAFE_RELEASE(m_balloon_bg);
 	for (int i = 0; i < m_childList.GetSize(); i++)
 		delete m_childList[i];
 }
@@ -227,6 +222,7 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case '8':
 		{
 					OnChangeTeam(wParam - 0x31);
+					return true;
 		}
 		case VK_PRIOR:
 		{
@@ -235,6 +231,7 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case VK_NEXT:
 		{
+						m_FaceIcon->m_bVisible = !m_FaceIcon->m_bVisible;
 						return true;
 		}
 			break;
@@ -319,26 +316,68 @@ void CLiteOnViewPort::OnStartCounting()
 	m_CountingText->m_bVisible = false;
 	
 	m_VolumeMeter->m_bVisible = true;
-	m_VolumeMeter->SetFinish(false);
+	m_VolumeMeter->SetSTATE(V_START);
 	
 	m_TimeCounting->m_bVisible = true;
 	m_TimeCounting->StartCounting();
+	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 2.56f, CResolution::m_screenResolutionY / 4.59f);
 }
 
 void CLiteOnViewPort::OnFinishCounting()
 {
-	m_VolumeMeter->SetFinish(true);
-
+	m_TimeCounting->EndCounting();
 	m_TimeCounting->m_bVisible = false;
+	m_VolumeMeter->SetSTATE(V_FINISH);
+
+	DXUTSetTimer(OnFinishCallBack, 2.f, &m_nIDEvent, this);
+	
+}
+
+void CLiteOnViewPort::ShowGrade()
+{
+	m_TimeCounting->m_bVisible = true;
+	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 2.74f, CResolution::m_screenResolutionY / 3.32f);
+	m_VolumeMeter->SetSTATE(SHOW_GRADE);
+	m_bFlashFast = true;
+	DXUTKillTimer(m_nIDEvent);
+	DXUTSetTimer(OnFinishGradeCallBack, 2.f, &m_nIDEventGrade, this);
+}
+
+void CLiteOnViewPort::FinishShowGrade()
+{
+	m_VolumeMeter->m_bVisible = false;
+	m_bFlashFast = false;
+	DXUTKillTimer(m_nIDEventGrade);
 }
 
 static float Opacity = 0.f;
-static float OpacityDiff = 0.1f;
+static float OpacityDiff = 0.083f;
+static float OpacityDiffFast = 0.166f;
 
 static int getCoinFlash()
 {
 	Opacity += OpacityDiff;
-	if (Opacity >= 5.f)
+	if (Opacity >= 4.f)
 		Opacity = 0.f;
 	return (int)Opacity;
+}
+
+static int getCoinFlashFast()
+{
+	Opacity += OpacityDiffFast;
+	if (Opacity >= 4.f)
+		Opacity = 0.f;
+	return (int)Opacity;
+}
+
+void WINAPI OnFinishCallBack(UINT nIDEvent, void* pUserContext)
+{
+	CLiteOnViewPort* pLiteOnViewPort = (CLiteOnViewPort*)pUserContext;
+	pLiteOnViewPort->ShowGrade();
+}
+
+void WINAPI OnFinishGradeCallBack(UINT nIDEvent, void* pUserContext)
+{
+	CLiteOnViewPort* pLiteOnViewPort = (CLiteOnViewPort*)pUserContext;
+	pLiteOnViewPort->FinishShowGrade();
 }
