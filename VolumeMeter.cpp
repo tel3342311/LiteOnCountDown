@@ -18,7 +18,7 @@ CVolumeMeter::CVolumeMeter(CControlBase*parent) : CControlBase(parent)
 , m_currentPeak(0.f)
 , m_pFinishBmp(NULL)
 , m_ppFlameBg(NULL)
-, m_bIsFinishState(false)
+, m_bIsFinishState(V_START)
 , m_nIDEvent(1001)
 {
 	m_pMICCapture = new CMICCapture();
@@ -84,21 +84,29 @@ void CVolumeMeter::Render(ID2D1DeviceContext*d2ddc)
 	float _o = m_opacity * GetParentOpacity();
 
 	d2ddc->SetTransform(_world);
-	if (!m_bIsFinishState)
+	if (m_bIsFinishState == V_START)
 	{
 		if (m_pLinearGradientBrush != NULL)
 			d2ddc->FillRectangle(D2D1::RectF(0, m_height * (1.f - m_currentPeak), m_width, m_height), m_pLinearGradientBrush);
 	} 
-	else
+	else if (m_bIsFinishState == V_FINISH)
 	{
 		int idx = getFlameFlash();
 		if (m_ppFlameBg[idx] != NULL)
 			d2ddc->DrawBitmap(m_ppFlameBg[idx]);
-		GetParentTransform(&_world);
-
-		d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 3.7f, CResolution::m_screenResolutionY / 4.3f) * _world);
-		if (m_pFinishBmp != NULL)
+		
+		if (m_pFinishBmp != NULL) {
+			GetParentTransform(&_world);
+			d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 2.45f, CResolution::m_screenResolutionY / 4.32f) * _world);
 			d2ddc->DrawBitmap(m_pFinishBmp);
+		}
+
+	}
+	else if (m_bIsFinishState == SHOW_GRADE) 
+	{
+		int idx = getFlameFlash();
+		if (m_ppFlameBg[idx] != NULL)
+			d2ddc->DrawBitmap(m_ppFlameBg[idx]);
 	}
 	
 	GetParentTransform(&_world);
@@ -120,25 +128,25 @@ ID2D1LinearGradientBrush* CVolumeMeter::GetGradientBrush(float fPeak)
 }
 
 static float Opacity = 0.f;
-static float OpacityDiff = 0.2f;
+static float OpacityDiff = 0.166f;
 
 static int getFlameFlash()
 {
 	Opacity += OpacityDiff;
-	if (Opacity >= 4.f)
+	if (Opacity >= 2.f)
 		Opacity = 0.f;
 	return (int)Opacity;
 }
 
-void CVolumeMeter::SetFinish(bool isFinish)
+void CVolumeMeter::SetSTATE(VOLUME_STATE state)
 {
-	m_bIsFinishState = isFinish;
-	if (!isFinish)
+	m_bIsFinishState = state;
+	if (m_bIsFinishState == V_START)
 	{
 		DXUTSetTimer(OnVolumePeakCallBack, 0.033f, &m_nIDEvent, this);
 		CLog::Write(L"===========================NEW TEST===================================\n");
 	}
-	else
+	else if (m_bIsFinishState == V_FINISH)
 	{
 		DXUTKillTimer(m_nIDEvent);
 		CLog::Write(L"===========================END TEST===================================\n");
@@ -148,6 +156,11 @@ void CVolumeMeter::SetFinish(bool isFinish)
 CMICCapture* CVolumeMeter::GetMICCapture()
 {
 	return m_pMICCapture;
+}
+
+VOLUME_STATE CVolumeMeter::GetSTATE()
+{
+	return m_bIsFinishState;
 }
 
 void WINAPI OnVolumePeakCallBack(UINT nIDEvent, void* pUserContext)

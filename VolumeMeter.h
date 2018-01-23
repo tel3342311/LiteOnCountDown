@@ -6,6 +6,11 @@
 #include "AspectRatioDefine.h"
 
 extern class CMICCapture;
+enum VOLUME_STATE{
+	V_START,
+	V_FINISH,
+	SHOW_GRADE,
+};
 
 class CVolumeMeter : public CControlBase
 {
@@ -14,7 +19,8 @@ public:
 	~CVolumeMeter();
 	//override functions
 	virtual void Render(ID2D1DeviceContext*d2ddc);
-	void SetFinish(bool isFinish);
+	void SetSTATE(VOLUME_STATE state);
+	VOLUME_STATE GetSTATE();
 	ID2D1LinearGradientBrush* GetGradientBrush(float ratio);
 	CMICCapture* GetMICCapture();
 	//send volume notification
@@ -26,7 +32,7 @@ private:
 	ID2D1LinearGradientBrush* m_pLinearGradientBrush;
 	ID2D1Bitmap* m_pFinishBmp;
 	ID2D1Bitmap** m_ppFlameBg;
-	bool m_bIsFinishState;
+	VOLUME_STATE m_bIsFinishState;
 	UINT m_nIDEvent;
 };
 

@@ -7,6 +7,7 @@ CTimeCounting::CTimeCounting(CControlBase*parent) : CControlBase(parent)
 , m_pSemiColon(NULL)
 , m_startTime(0)
 , m_endTime(0)
+, m_bIsFinish(false)
 {
 	m_ppDigitBitmap = new ID2D1Bitmap*[10];
 	for (int i = 0; i < 10; i++) {

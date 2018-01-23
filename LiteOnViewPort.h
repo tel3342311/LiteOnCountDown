@@ -38,6 +38,8 @@ public:
 	void OnFinishCounting();
 	void OnVolumeEvent(float fPeak);
 	void OnFinishTextCounting();
+	void ShowGrade();
+	void FinishShowGrade();
 private:
 	bool m_bPressed;
 	//Rainbow bg
@@ -53,6 +55,9 @@ private:
 	CCountingText* m_CountingText;
 	CTimeCounting* m_TimeCounting;
 	CVolumeMeter* m_VolumeMeter;
+	UINT m_nIDEvent;
+	UINT m_nIDEventGrade;
+	bool m_bFlashFast;
 };
 
 #endif

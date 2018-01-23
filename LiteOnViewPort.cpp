@@ -4,11 +4,14 @@
 
 CLiteOnViewPort *CLiteOn::m_liteOnViewPort = NULL;
 static int getCoinFlash();
+static int getCoinFlashFast();
+
+void WINAPI OnFinishCallBack(UINT nIDEvent, void* pUserContext);
+void WINAPI OnFinishGradeCallBack(UINT nIDEvent, void* pUserContext);
 
 CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_bPressed(false)
 , m_bg(NULL)
-, m_bg_frame(NULL)
 , m_coin_bg(NULL)
 , m_balloon_bg(NULL)
 , m_FaceIcon(NULL)
@@ -16,6 +19,9 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_CountingText(NULL)
 , m_TimeCounting(NULL)
 , m_VolumeMeter(NULL)
+, m_nIDEvent(1002)
+, m_nIDEventGrade(1003)
+, m_bFlashFast(false)
 {
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_1.png", &m_bg, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	m_coin_bg = new ID2D1Bitmap*[5];
@@ -144,18 +150,22 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 	d2ddc->SetTransform(_world);
 	if (m_bg != NULL)
 		d2ddc->DrawBitmap(m_bg);
-	if (m_bg_frame != NULL)
-		d2ddc->DrawBitmap(m_bg_frame);
-
+	if (m_VolumeMeter != NULL && m_VolumeMeter->GetSTATE() == V_START)
+	{
+		if (m_coin_bg[0] != NULL)
+			d2ddc->DrawBitmap(m_coin_bg[0]);
+	}
+	else
+	{
+		int idx = m_bFlashFast ? getCoinFlashFast() : getCoinFlash();
+		if (m_coin_bg[idx] != NULL)
+			d2ddc->DrawBitmap(m_coin_bg[idx]);
+	}
+	
+	
 	if (m_VolumeMeter != NULL)
 		m_VolumeMeter->Render(d2ddc);
 
-	int idx = getCoinFlash();
-	if (m_coin_bg[idx] != NULL) 
-		d2ddc->DrawBitmap(m_coin_bg[idx]);
-	if (m_balloon_bg != NULL)
-		d2ddc->DrawBitmap(m_balloon_bg);
-	
 	if (m_TeamTitle != NULL)
 		m_TeamTitle->Render(d2ddc);
 

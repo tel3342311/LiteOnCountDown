@@ -15,6 +15,7 @@ public:
 	//override function
 	virtual void Render(ID2D1DeviceContext*);
 	void StartCounting();
+	void EndCounting();
 private:
 	void UpdateDigit();
 	ID2D1Bitmap** m_ppDigitBitmap;
@@ -22,6 +23,8 @@ private:
 	DWORD m_startTime;
 	DWORD m_endTime;
 	int m_pDigit[4];
+	float m_fGrade;
+	bool m_bIsFinish;
 };
 
 #endif
