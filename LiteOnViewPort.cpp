@@ -88,7 +88,7 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_3);
 		countingFinish++;
-		if (countingFinish > 25) 
+		if (countingFinish > 5) 
 		{
 			m_FaceIcon->SetFaceState(FINISH);
 			OnFinishCounting();
