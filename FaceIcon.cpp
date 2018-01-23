@@ -24,6 +24,7 @@ CFaceIcon::~CFaceIcon()
 	for (int i = 0; i < 7; i++) {
 		SAFE_RELEASE(m_pFaceIcon[i]);
 	}
+	SAFE_DELETE(m_pFaceIcon);
 }
 
 void CFaceIcon::Render(ID2D1DeviceContext*d2ddc)

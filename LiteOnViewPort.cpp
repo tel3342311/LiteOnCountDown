@@ -51,6 +51,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_VolumeMeter = new CVolumeMeter(this);
 	m_VolumeMeter->SetLocation(CResolution::m_screenResolutionX / 20.64f, CResolution::m_screenResolutionY / 12.13f);
 	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX / 1.0878f, CResolution::m_screenResolutionY / 1.956f);
+	m_childList.Add(m_VolumeMeter);
 
 	//Event hook
 	__hook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
