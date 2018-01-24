@@ -20,7 +20,7 @@ CVolumeMeter::CVolumeMeter(CControlBase*parent) : CControlBase(parent)
 , m_currentPeak(0.f)
 , m_pFinishBmp(NULL)
 , m_ppFlameBg(NULL)
-, m_bIsFinishState(V_START)
+, m_bIsFinishState(V_READY)
 , m_nIDEvent(1001)
 , m_pRectGeometry(NULL)
 , m_pBlackBrush(NULL)
@@ -96,7 +96,7 @@ void CVolumeMeter::Render(ID2D1DeviceContext*d2ddc)
 	{
 		//if (m_pLinearGradientBrush != NULL)
 		//	d2ddc->FillRectangle(D2D1::RectF(0, m_height * (1.f - m_currentPeak), m_width, m_height), m_pLinearGradientBrush);
-		int level = 20.f * (m_currentPeak*2.f) + 0.1f;
+		int level = 20.f * m_currentPeak;
 		for (int i = 0; i < 20; i++)
 		{
 			d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 3.f + 60 * i, CResolution::m_screenResolutionY / 4.8f) * _world);
@@ -170,6 +170,10 @@ static int getFlameFlash()
 
 void CVolumeMeter::SetSTATE(VOLUME_STATE state)
 {
+	if (m_bIsFinishState == V_START && m_bIsFinishState == state)
+	{
+		DXUTKillTimer(m_nIDEvent);
+	}
 	m_bIsFinishState = state;
 	if (m_bIsFinishState == V_START)
 	{
@@ -200,7 +204,7 @@ void WINAPI OnVolumePeakCallBack(UINT nIDEvent, void* pUserContext)
 	float fPeak = 0.f;
 	if (pVolumeMeter->GetMICCapture() != NULL)
 		pVolumeMeter->GetMICCapture()->GetPeakValue(&fPeak);
-	pVolumeMeter->GetGradientBrush(fPeak);
+	pVolumeMeter->GetGradientBrush(fPeak);//(fPeak > 0.1 ? sqrt(sqrt(fPeak)) : fPeak);
 	tstringstream tss;
 	tss << "Peak is " << fPeak << endl;
 	CLog::Write(tss.str());

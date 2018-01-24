@@ -7,6 +7,7 @@
 
 extern class CMICCapture;
 enum VOLUME_STATE{
+	V_READY,
 	V_START,
 	V_FINISH,
 	SHOW_GRADE,

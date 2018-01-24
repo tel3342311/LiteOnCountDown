@@ -5,7 +5,11 @@
 CLiteOnViewPort *CLiteOn::m_liteOnViewPort = NULL;
 static int getCoinFlash();
 static int getCoinFlashFast();
-
+static int countingStartState = 1;
+static int countingFinish = 0;
+static int sShowFinish = 60;
+static int sShowGrade = 60;
+static VOLUME_STATE sState = V_START;
 void WINAPI OnFinishCallBack(UINT nIDEvent, void* pUserContext);
 void WINAPI OnFinishGradeCallBack(UINT nIDEvent, void* pUserContext);
 
@@ -16,7 +20,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_balloon_bg(NULL)
 , m_FaceIcon(NULL)
 , m_TeamTitle(NULL)
-, m_CountingText(NULL)
+//, m_CountingText(NULL)
 , m_TimeCounting(NULL)
 , m_VolumeMeter(NULL)
 , m_nIDEvent(1002)
@@ -43,9 +47,9 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_TeamTitle->SetLocation((CResolution::m_screenResolutionX - CResolution::m_screenResolutionX / 1.37f), 0.f);
 	m_childList.Add(m_TeamTitle);
 
-	m_CountingText = new CCountingText(this);
-	m_CountingText->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
-	m_childList.Add(m_CountingText);
+	//m_CountingText = new CCountingText(this);
+	//m_CountingText->SetLocation(CResolution::m_screenResolutionX / 15.11f, CResolution::m_screenResolutionY / 4.06f);
+	//m_childList.Add(m_CountingText);
 	
 	m_TimeCounting = new CTimeCounting(this);
 	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 2.56f, CResolution::m_screenResolutionY / 4.59f);
@@ -58,14 +62,14 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 
 	//Event hook
 	__hook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
-	__hook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
+	//__hook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
 }
 
 
 CLiteOnViewPort::~CLiteOnViewPort()
 {
 	__unhook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
-	__unhook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
+	//__unhook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
 
 	SAFE_RELEASE(m_bg);
 	SAFE_RELEASE(m_bg_frame);
@@ -77,7 +81,7 @@ CLiteOnViewPort::~CLiteOnViewPort()
 	for (int i = 0; i < m_childList.GetSize(); i++)
 		delete m_childList[i];
 }
-static int countingFinish = 0;
+
 
 void CLiteOnViewPort::OnVolumeEvent(float fPeak) 
 {
@@ -85,11 +89,24 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 	{
 		m_FaceIcon->SetFaceState(START);
 	}
-	else if (fPeak < 0.1f)
+	else if (fPeak < 0.07f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_3);
+		
 		countingFinish++;
-		if (countingFinish > 5) 
+		if (countingStartState == 1) 
+		{
+			if (countingFinish > 60) {
+				m_FaceIcon->SetFaceState(FINISH);
+				OnFinishCounting();
+				countingFinish = 0;
+				return;
+			}
+			else {
+				return;
+			}
+		}
+		if (countingFinish > 10) 
 		{
 			m_FaceIcon->SetFaceState(FINISH);
 			OnFinishCounting();
@@ -97,20 +114,28 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 		}
 
 	}
-	else if (fPeak < 0.4f)
+	else if (fPeak < 0.3f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_3);
 		countingFinish = 0;
+		countingStartState = 0;
 	}
-	else if (fPeak < 0.6f)
+	else if (fPeak < 0.45f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_2);
 		countingFinish = 0;
+		countingStartState = 0;
 	}
-	else if (fPeak < 0.8f)
+	else if (fPeak < 0.6f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_1);
 		countingFinish = 0;
+		countingStartState = 0;
+	}
+	else
+	{
+		countingFinish = 0;
+		countingStartState = 0;
 	}
 }
 
@@ -162,6 +187,27 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 			d2ddc->DrawBitmap(m_coin_bg[idx]);
 	}
 	
+	if (sState == V_FINISH) 
+	{
+		sShowFinish--;
+		if (sShowFinish == 0) 
+		{
+			sState = SHOW_GRADE;
+			sShowGrade = 60;
+		}
+	}
+	else if (sState == SHOW_GRADE) 
+	{
+		if (sShowGrade == 60)
+		{
+			ShowGrade();
+		}
+		else if (sShowGrade == 0)
+		{
+			FinishShowGrade();
+		}
+		sShowGrade--;
+	}
 	
 	if (m_VolumeMeter != NULL)
 		m_VolumeMeter->Render(d2ddc);
@@ -169,8 +215,8 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 	if (m_TeamTitle != NULL)
 		m_TeamTitle->Render(d2ddc);
 
-	if (m_CountingText != NULL)
-		m_CountingText->Render(d2ddc);
+//	if (m_CountingText != NULL)
+//		m_CountingText->Render(d2ddc);
 
 	if (m_FaceIcon != NULL)
 		m_FaceIcon->Render(d2ddc);
@@ -212,6 +258,11 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 				OnStartCounting();
 				break;
 			}
+			case 'p':
+			{
+				OnFinishCounting();
+				break;
+			}
 			default:
 				break;
 			}
@@ -241,8 +292,7 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case VK_NEXT:
 		{
-						m_FaceIcon->m_bVisible = !m_FaceIcon->m_bVisible;
-						return true;
+
 		}
 			break;
 		case VK_UP:
@@ -316,14 +366,14 @@ void CLiteOnViewPort::OnChangeTeam(int idx)
 	m_VolumeMeter->m_bVisible = false;
 	m_TimeCounting->m_bVisible = false;
 	m_TeamTitle->setTeamIdx(idx);
-	m_CountingText->m_bVisible = true;
-	m_CountingText->setTeamIdx(idx);
+//	m_CountingText->m_bVisible = true;
+//	m_CountingText->setTeamIdx(idx);
 	m_FaceIcon->SetFaceState(PREPARE);
 }
 
 void CLiteOnViewPort::OnStartCounting()
 {
-	m_CountingText->m_bVisible = false;
+//	m_CountingText->m_bVisible = false;
 	
 	m_VolumeMeter->m_bVisible = true;
 	m_VolumeMeter->SetSTATE(V_START);
@@ -331,6 +381,10 @@ void CLiteOnViewPort::OnStartCounting()
 	m_TimeCounting->m_bVisible = true;
 	m_TimeCounting->StartCounting();
 	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 2.56f, CResolution::m_screenResolutionY / 4.59f);
+
+	countingStartState = 1;
+
+	sState = V_START;
 }
 
 void CLiteOnViewPort::OnFinishCounting()
@@ -338,9 +392,15 @@ void CLiteOnViewPort::OnFinishCounting()
 	m_TimeCounting->EndCounting();
 	m_TimeCounting->m_bVisible = false;
 	m_VolumeMeter->SetSTATE(V_FINISH);
+	//Sleep(2000);
+	//DXUTSetTimer(OnFinishCallBack, 2.f, &m_nIDEvent, this);
+	//ShowGrade();
+	//Sleep(2000);
+	//FinishShowGrade();
 
-	DXUTSetTimer(OnFinishCallBack, 2.f, &m_nIDEvent, this);
-	
+	countingStartState = 0;
+	sState = V_FINISH;
+	sShowFinish = 60;
 }
 
 void CLiteOnViewPort::ShowGrade()
@@ -349,15 +409,15 @@ void CLiteOnViewPort::ShowGrade()
 	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 2.74f, CResolution::m_screenResolutionY / 3.32f);
 	m_VolumeMeter->SetSTATE(SHOW_GRADE);
 	m_bFlashFast = true;
-	DXUTKillTimer(m_nIDEvent);
-	DXUTSetTimer(OnFinishGradeCallBack, 2.f, &m_nIDEventGrade, this);
+	//DXUTKillTimer(m_nIDEvent);
+	//DXUTSetTimer(OnFinishGradeCallBack, 2.f, &m_nIDEventGrade, this);
 }
 
 void CLiteOnViewPort::FinishShowGrade()
 {
 	m_VolumeMeter->m_bVisible = false;
 	m_bFlashFast = false;
-	DXUTKillTimer(m_nIDEventGrade);
+	//DXUTKillTimer(m_nIDEventGrade);
 }
 
 static float Opacity = 0.f;
