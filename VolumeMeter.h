@@ -30,8 +30,10 @@ private:
 	CMICCapture* m_pMICCapture;
 	ID2D1GradientStopCollection* m_pGradient_stop_collection;
 	ID2D1LinearGradientBrush* m_pLinearGradientBrush;
+	ID2D1SolidColorBrush *m_pBlackBrush;
 	ID2D1Bitmap* m_pFinishBmp;
 	ID2D1Bitmap** m_ppFlameBg;
+	ID2D1RectangleGeometry* m_pRectGeometry;
 	VOLUME_STATE m_bIsFinishState;
 	UINT m_nIDEvent;
 };
