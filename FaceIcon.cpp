@@ -8,7 +8,7 @@ CFaceIcon::CFaceIcon(CControlBase*parent) : CControlBase(parent)
 	for (int i = 0; i < 7; i++) {
 		m_pFaceIcon[i] = NULL;
 	}
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_stage0.png", &m_pFaceIcon[0]);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_stage0.png", &m_pFaceIcon[0], CResolution::m_screenResolutionX / 3.5, CResolution::m_screenResolutionX / 3.5);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_stage1.png", &m_pFaceIcon[1], CResolution::m_screenResolutionX / 3.5, CResolution::m_screenResolutionX / 3.5);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_stage2.png", &m_pFaceIcon[2], CResolution::m_screenResolutionX / 3.5, CResolution::m_screenResolutionX / 3.5);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_stage3.png", &m_pFaceIcon[3], CResolution::m_screenResolutionX / 3.5, CResolution::m_screenResolutionX / 3.5);

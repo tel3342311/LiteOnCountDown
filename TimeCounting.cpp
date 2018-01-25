@@ -13,18 +13,18 @@ CTimeCounting::CTimeCounting(CControlBase*parent) : CControlBase(parent)
 	for (int i = 0; i < 10; i++) {
 		m_ppDigitBitmap[i] = NULL;
 	}
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number0.png", &m_ppDigitBitmap[0]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number1.png", &m_ppDigitBitmap[1]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number2.png", &m_ppDigitBitmap[2]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number3.png", &m_ppDigitBitmap[3]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number4.png", &m_ppDigitBitmap[4]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number5.png", &m_ppDigitBitmap[5]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number6.png", &m_ppDigitBitmap[6]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number7.png", &m_ppDigitBitmap[7]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number8.png", &m_ppDigitBitmap[8]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number9.png", &m_ppDigitBitmap[9]);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number0.png", &m_ppDigitBitmap[0], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number1.png", &m_ppDigitBitmap[1], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number2.png", &m_ppDigitBitmap[2], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number3.png", &m_ppDigitBitmap[3], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number4.png", &m_ppDigitBitmap[4], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number5.png", &m_ppDigitBitmap[5], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number6.png", &m_ppDigitBitmap[6], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number7.png", &m_ppDigitBitmap[7], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number8.png", &m_ppDigitBitmap[8], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number9.png", &m_ppDigitBitmap[9], CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
 
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number dot.png", &m_pSemiColon);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_ani_number dot.png", &m_pSemiColon, CResolution::m_screenResolutionX / 9.f, CResolution::m_screenResolutionY / 6.f);
 }
 
 
@@ -62,16 +62,16 @@ void CTimeCounting::Render(ID2D1DeviceContext*d2ddc) {
 	UpdateDigit();
 	if (m_ppDigitBitmap[m_pDigit[0]] != NULL)
 		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[0]]);
-	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.8f, 0) * _world);
+	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f, 0) * _world);
 	if (m_ppDigitBitmap[m_pDigit[1]] != NULL)
 		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[1]]);
-	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.8f * 2, 0) * _world);
+	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f * 2, 0) * _world);
 	if (m_pSemiColon != NULL)
 		d2ddc->DrawBitmap(m_pSemiColon);
-	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.8f * 3, 0) * _world);
+	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f * 3, 0) * _world);
 	if (m_ppDigitBitmap[m_pDigit[2]] != NULL)
 		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[2]]);
-	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.8f * 4, 0) * _world);
+	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f * 4, 0) * _world);
 	if (m_ppDigitBitmap[m_pDigit[3]] != NULL)
 		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[3]]);
 
@@ -89,11 +89,12 @@ void CTimeCounting::StartCounting()
 	m_bIsFinish = false;
 }
 
-void CTimeCounting::EndCounting()
+float CTimeCounting::EndCounting()
 {
 	m_endTime = timeGetTime();
 	m_fGrade = (m_endTime - m_startTime) / 1000.f;
 	m_bIsFinish = true;
+	return m_fGrade;
 }
 
 void CTimeCounting::UpdateDigit() 

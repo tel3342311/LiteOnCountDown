@@ -27,7 +27,7 @@ CVolumeMeter::CVolumeMeter(CControlBase*parent) : CControlBase(parent)
 {
 	m_pMICCapture = new CMICCapture();
 
-	CDXWrapper::GetD2DFactory()->CreateRectangleGeometry(D2D1::RectF(0, 0, 50, 136), &m_pRectGeometry);
+	CDXWrapper::GetD2DFactory()->CreateRectangleGeometry(D2D1::RectF(0, 0, CResolution::m_screenResolutionX / 38.4f, CResolution::m_screenResolutionY / 7.94f), &m_pRectGeometry);
 	D2D1_GRADIENT_STOP gradientStops[2];
 	gradientStops[0].color = D2D1::ColorF(0.91f, 1.f, 0.f);
 	gradientStops[0].position = 0.f;
@@ -42,15 +42,15 @@ CVolumeMeter::CVolumeMeter(CControlBase*parent) : CControlBase(parent)
 		&m_pGradient_stop_collection
 		);
 
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_img_end.png", &m_pFinishBmp);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_img_end.png", &m_pFinishBmp, CResolution::m_screenResolutionX / 2.44f, CResolution::m_screenResolutionY / 3.375f);
 
-	m_ppFlameBg = new ID2D1Bitmap*[4];
+	m_ppFlameBg = new ID2D1Bitmap*[2];
 	for (int i = 0; i < 2; i++) {
 		m_ppFlameBg[i] = NULL;
 	}
 
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-1.png", &m_ppFlameBg[0]);
-	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-2.png", &m_ppFlameBg[1]);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-1.png", &m_ppFlameBg[0], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY / 2.769f);
+	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_end-2.png", &m_ppFlameBg[1], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY / 2.769f);
 	CDXWrapper::GetD2DDC()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black, 1.0f),&m_pBlackBrush);
 	CLog::Init(_T("Log.txt"));
 }
@@ -64,8 +64,6 @@ CVolumeMeter::~CVolumeMeter()
 	SAFE_RELEASE(m_pFinishBmp);
 	SAFE_RELEASE(m_ppFlameBg[0]);
 	SAFE_RELEASE(m_ppFlameBg[1]);
-	SAFE_RELEASE(m_ppFlameBg[2]);
-	SAFE_RELEASE(m_ppFlameBg[3]);
 	SAFE_DELETE(m_ppFlameBg);
 	SAFE_RELEASE(m_pRectGeometry);
 	SAFE_RELEASE(m_pBlackBrush);
@@ -99,7 +97,7 @@ void CVolumeMeter::Render(ID2D1DeviceContext*d2ddc)
 		int level = 20.f * m_currentPeak;
 		for (int i = 0; i < 20; i++)
 		{
-			d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 3.f + 60 * i, CResolution::m_screenResolutionY / 4.8f) * _world);
+			d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 3.f + CResolution::m_screenResolutionX / 32.f * i, CResolution::m_screenResolutionY / 4.8f) * _world);
 			if (i < level)
 			{
 				m_pBlackBrush->SetColor(D2D1::ColorF(getColor(i)));
@@ -204,7 +202,7 @@ void WINAPI OnVolumePeakCallBack(UINT nIDEvent, void* pUserContext)
 	float fPeak = 0.f;
 	if (pVolumeMeter->GetMICCapture() != NULL)
 		pVolumeMeter->GetMICCapture()->GetPeakValue(&fPeak);
-	pVolumeMeter->GetGradientBrush(fPeak);//(fPeak > 0.1 ? sqrt(sqrt(fPeak)) : fPeak);
+	pVolumeMeter->GetGradientBrush(sqrt(sqrt(fPeak)));
 	tstringstream tss;
 	tss << "Peak is " << fPeak << endl;
 	CLog::Write(tss.str());

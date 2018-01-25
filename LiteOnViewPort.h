@@ -11,6 +11,10 @@
 #include "CountingText.h"
 #include "TimeCounting.h"
 #include "VolumeMeter.h"
+#include <vector>
+#include <utility>
+
+using namespace std;
 
 class CLiteOnViewPort;
 
@@ -44,8 +48,6 @@ private:
 	bool m_bPressed;
 	//Rainbow bg
 	ID2D1Bitmap* m_bg;
-	//Frame bg
-	ID2D1Bitmap* m_bg_frame;
 	//Coin animation bg
 	ID2D1Bitmap** m_coin_bg;
 	//Ballon Bg
@@ -58,6 +60,8 @@ private:
 	UINT m_nIDEvent;
 	UINT m_nIDEventGrade;
 	bool m_bFlashFast;
+	int m_nCurrentTeamIdx;
+	vector<pair<int, float>> m_teamGrade;
 };
 
 #endif

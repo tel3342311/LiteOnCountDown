@@ -1,6 +1,8 @@
 #include "DXUT.h"
 #include "LiteOnViewPort.h"
+#include "AppMgr.h"
 
+using namespace std;
 
 CLiteOnViewPort *CLiteOn::m_liteOnViewPort = NULL;
 static int getCoinFlash();
@@ -26,6 +28,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 , m_nIDEvent(1002)
 , m_nIDEventGrade(1003)
 , m_bFlashFast(false)
+, m_nCurrentTeamIdx(0)
 {
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_1.png", &m_bg, CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	m_coin_bg = new ID2D1Bitmap*[5];
@@ -39,7 +42,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 
 	m_FaceIcon = new CFaceIcon(this);
 	m_FaceIcon->SetSize(CResolution::m_screenResolutionX / 3.54f, CResolution::m_screenResolutionX / 3.54f);
-	m_FaceIcon->SetLocation(0.f, 120.f);
+	m_FaceIcon->SetLocation(0.f, CResolution::m_screenResolutionY / 9.f);
 	m_childList.Add(m_FaceIcon);
 
 	m_TeamTitle = new CTeamTitle(this);
@@ -57,12 +60,16 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 
 	m_VolumeMeter = new CVolumeMeter(this);
 	m_VolumeMeter->SetLocation(0.f, CResolution::m_screenResolutionY / 5.f);
-	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX, CResolution::m_screenResolutionY / 2.77f);
+	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX, CResolution::m_screenResolutionY / 2.f);
 	m_childList.Add(m_VolumeMeter);
 
 	//Event hook
 	__hook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
 	//__hook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
+
+	for (int i = 0; i < 8; i++){
+		m_teamGrade.push_back(pair<int, float>(i, 0.f)); //push_back(new pair<int, float>(i, 0.f));
+	}
 }
 
 
@@ -72,7 +79,6 @@ CLiteOnViewPort::~CLiteOnViewPort()
 	//__unhook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
 
 	SAFE_RELEASE(m_bg);
-	SAFE_RELEASE(m_bg_frame);
 	SAFE_RELEASE(m_coin_bg[0]);
 	SAFE_RELEASE(m_coin_bg[1]);
 	SAFE_RELEASE(m_coin_bg[2]);
@@ -98,7 +104,7 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 		{
 			if (countingFinish > 60) {
 				m_FaceIcon->SetFaceState(FINISH);
-				OnFinishCounting();
+				//OnFinishCounting();
 				countingFinish = 0;
 				return;
 			}
@@ -109,7 +115,7 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 		if (countingFinish > 10) 
 		{
 			m_FaceIcon->SetFaceState(FINISH);
-			OnFinishCounting();
+			//OnFinishCounting();
 			countingFinish = 0;
 		}
 
@@ -259,6 +265,7 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 			case 'p':
+			case 'P':
 			{
 				OnFinishCounting();
 				break;
@@ -282,7 +289,8 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case '7':
 		case '8':
 		{
-					OnChangeTeam(wParam - 0x31);
+					m_nCurrentTeamIdx = wParam - 0x31;
+					OnChangeTeam(m_nCurrentTeamIdx);
 					return true;
 		}
 		case VK_PRIOR:
@@ -389,18 +397,23 @@ void CLiteOnViewPort::OnStartCounting()
 
 void CLiteOnViewPort::OnFinishCounting()
 {
-	m_TimeCounting->EndCounting();
+	float _grade = m_TimeCounting->EndCounting();
 	m_TimeCounting->m_bVisible = false;
 	m_VolumeMeter->SetSTATE(V_FINISH);
-	//Sleep(2000);
-	//DXUTSetTimer(OnFinishCallBack, 2.f, &m_nIDEvent, this);
-	//ShowGrade();
-	//Sleep(2000);
-	//FinishShowGrade();
-
 	countingStartState = 0;
 	sState = V_FINISH;
 	sShowFinish = 60;
+
+	m_teamGrade[m_nCurrentTeamIdx].second = _grade;
+	tstringstream tss;
+	CLog::Write(L"=====================================Grade=====================================\n");
+	for (int i = 0; i < 8; i++)
+	{
+		tss << "Team " << i + 1 << " , Grade is " << m_teamGrade[i].second << endl;
+		
+	}
+
+	CLog::Write(tss.str());
 }
 
 void CLiteOnViewPort::ShowGrade()
