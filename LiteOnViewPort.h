@@ -13,6 +13,7 @@
 #include "VolumeMeter.h"
 #include <vector>
 #include <utility>
+#include "Ranking.h"
 
 using namespace std;
 
@@ -57,6 +58,7 @@ private:
 	CCountingText* m_CountingText;
 	CTimeCounting* m_TimeCounting;
 	CVolumeMeter* m_VolumeMeter;
+	CRanking* m_RankingPage;
 	UINT m_nIDEvent;
 	UINT m_nIDEventGrade;
 	bool m_bFlashFast;

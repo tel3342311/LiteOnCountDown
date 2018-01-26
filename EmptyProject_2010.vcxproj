@@ -417,6 +417,7 @@
     <ClCompile Include="LiteOn.cpp" />
     <ClCompile Include="LiteOnViewPort.cpp" />
     <ClCompile Include="MICCapture.cpp" />
+    <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="TeamTitle.cpp" />
     <ClCompile Include="TimeCounting.cpp" />
     <ClCompile Include="VolumeMeter.cpp" />
@@ -453,6 +454,7 @@
     <ClInclude Include="FaceIcon.h" />
     <ClInclude Include="LiteOnViewPort.h" />
     <ClInclude Include="MICCapture.h" />
+    <ClInclude Include="Ranking.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="TeamTitle.h" />
     <ClInclude Include="TimeCounting.h" />

@@ -33,7 +33,7 @@ CTimeCounting::~CTimeCounting()
 	for (int i = 0; i < 10; i++) {
 		SAFE_RELEASE(m_ppDigitBitmap[i]);
 	}
-
+	SAFE_DELETE(m_ppDigitBitmap);
 	SAFE_RELEASE(m_pSemiColon);
 }
 

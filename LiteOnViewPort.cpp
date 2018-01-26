@@ -25,6 +25,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 //, m_CountingText(NULL)
 , m_TimeCounting(NULL)
 , m_VolumeMeter(NULL)
+, m_RankingPage(NULL)
 , m_nIDEvent(1002)
 , m_nIDEventGrade(1003)
 , m_bFlashFast(false)
@@ -39,7 +40,7 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2-2.png", &m_coin_bg[1], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2-3.png", &m_coin_bg[2], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	CDXWrapper::LoadImageFromFileAsyncEx(L"images\\main_gnd_2-4.png", &m_coin_bg[3], CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
-
+	
 	m_FaceIcon = new CFaceIcon(this);
 	m_FaceIcon->SetSize(CResolution::m_screenResolutionX / 3.54f, CResolution::m_screenResolutionX / 3.54f);
 	m_FaceIcon->SetLocation(0.f, CResolution::m_screenResolutionY / 9.f);
@@ -62,6 +63,12 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_VolumeMeter->SetLocation(0.f, CResolution::m_screenResolutionY / 5.f);
 	m_VolumeMeter->SetSize(CResolution::m_screenResolutionX, CResolution::m_screenResolutionY / 2.f);
 	m_childList.Add(m_VolumeMeter);
+
+
+	m_RankingPage = new CRanking(this);
+	m_RankingPage->SetLocation(0, 0);
+	m_RankingPage->SetSize(CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
+	m_childList.Add(m_RankingPage);
 
 	//Event hook
 	__hook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
@@ -181,6 +188,11 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 	d2ddc->SetTransform(_world);
 	if (m_bg != NULL)
 		d2ddc->DrawBitmap(m_bg);
+	if (m_RankingPage != NULL && m_RankingPage->m_bVisible == true)
+	{
+		m_RankingPage->Render(d2ddc);
+		return;
+	}
 	if (m_VolumeMeter != NULL && m_VolumeMeter->GetSTATE() == V_START)
 	{
 		if (m_coin_bg[0] != NULL)
@@ -229,7 +241,7 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 
 	if (m_TimeCounting != NULL)
 		m_TimeCounting->Render(d2ddc);
-
+		
 }
 
 bool CLiteOnViewPort::HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam)
@@ -269,6 +281,12 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				OnFinishCounting();
 				break;
+			}
+			case 'R':
+			case 'r':
+			{
+						m_RankingPage->m_bVisible = !m_RankingPage->m_bVisible;
+						break;
 			}
 			default:
 				break;
@@ -403,13 +421,23 @@ void CLiteOnViewPort::OnFinishCounting()
 	countingStartState = 0;
 	sState = V_FINISH;
 	sShowFinish = 60;
-
-	m_teamGrade[m_nCurrentTeamIdx].second = _grade;
+	for (int i = 0; i < m_teamGrade.size(); i++) 
+	{
+		if (m_teamGrade[i].first == m_nCurrentTeamIdx)
+		{
+			m_teamGrade[i].second = _grade;
+			break;
+		}
+	}
+	if (m_RankingPage != NULL)
+	{
+		m_RankingPage->UpdateRank(&m_teamGrade);
+	}
 	tstringstream tss;
 	CLog::Write(L"=====================================Grade=====================================\n");
 	for (int i = 0; i < 8; i++)
 	{
-		tss << "Team " << i + 1 << " , Grade is " << m_teamGrade[i].second << endl;
+		tss << "Team " << m_teamGrade[i].first + 1 << " , Grade is " << m_teamGrade[i].second << endl;
 		
 	}
 

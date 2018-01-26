@@ -89,6 +89,7 @@
     <ClCompile Include="CountingText.cpp" />
     <ClCompile Include="TimeCounting.cpp" />
     <ClCompile Include="VolumeMeter.cpp" />
+    <ClCompile Include="Ranking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SharedBase\DXUT\Core\DXUT.h">
@@ -173,6 +174,7 @@
     <ClInclude Include="CountingText.h" />
     <ClInclude Include="TimeCounting.h" />
     <ClInclude Include="VolumeMeter.h" />
+    <ClInclude Include="Ranking.h" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
