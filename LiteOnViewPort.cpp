@@ -65,18 +65,18 @@ CLiteOnViewPort::CLiteOnViewPort(CControlBase*parent) : CControlBase(parent)
 	m_childList.Add(m_VolumeMeter);
 
 
+	for (int i = 0; i < 8; i++){
+		m_teamGrade.push_back(pair<int, float>(i, 0.f)); //push_back(new pair<int, float>(i, 0.f));
+	}
+
 	m_RankingPage = new CRanking(this);
 	m_RankingPage->SetLocation(0, 0);
 	m_RankingPage->SetSize(CResolution::m_screenResolutionX, CResolution::m_screenResolutionY);
 	m_childList.Add(m_RankingPage);
-
+	m_RankingPage->UpdateRank(&m_teamGrade);
 	//Event hook
 	__hook(&CVolumeMeter::VolumeEvent, m_VolumeMeter, &CLiteOnViewPort::OnVolumeEvent);
 	//__hook(&CCountingText::ReadyEvent, m_CountingText, &CLiteOnViewPort::OnFinishTextCounting);
-
-	for (int i = 0; i < 8; i++){
-		m_teamGrade.push_back(pair<int, float>(i, 0.f)); //push_back(new pair<int, float>(i, 0.f));
-	}
 }
 
 
@@ -110,7 +110,7 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 		if (countingStartState == 1) 
 		{
 			if (countingFinish > 60) {
-				m_FaceIcon->SetFaceState(FINISH);
+				//m_FaceIcon->SetFaceState(FINISH);
 				//OnFinishCounting();
 				countingFinish = 0;
 				return;
@@ -121,25 +121,25 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 		}
 		if (countingFinish > 10) 
 		{
-			m_FaceIcon->SetFaceState(FINISH);
+			//m_FaceIcon->SetFaceState(FINISH);
 			//OnFinishCounting();
 			countingFinish = 0;
 		}
 
 	}
-	else if (fPeak < 0.3f)
+	else if (fPeak < 0.15f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_3);
 		countingFinish = 0;
 		countingStartState = 0;
 	}
-	else if (fPeak < 0.45f)
+	else if (fPeak < 0.55f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_2);
 		countingFinish = 0;
 		countingStartState = 0;
 	}
-	else if (fPeak < 0.6f)
+	else if (fPeak < 0.75f)
 	{
 		m_FaceIcon->SetFaceState(PROGRESS_1);
 		countingFinish = 0;
@@ -147,6 +147,7 @@ void CLiteOnViewPort::OnVolumeEvent(float fPeak)
 	}
 	else
 	{
+		m_FaceIcon->SetFaceState(PROGRESS_1);
 		countingFinish = 0;
 		countingStartState = 0;
 	}
@@ -307,6 +308,7 @@ bool CLiteOnViewPort::HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case '7':
 		case '8':
 		{
+					m_RankingPage->m_bVisible = false;
 					m_nCurrentTeamIdx = wParam - 0x31;
 					OnChangeTeam(m_nCurrentTeamIdx);
 					return true;
@@ -400,7 +402,7 @@ void CLiteOnViewPort::OnChangeTeam(int idx)
 void CLiteOnViewPort::OnStartCounting()
 {
 //	m_CountingText->m_bVisible = false;
-	
+	m_FaceIcon->SetFaceState(START);
 	m_VolumeMeter->m_bVisible = true;
 	m_VolumeMeter->SetSTATE(V_START);
 	
@@ -415,6 +417,7 @@ void CLiteOnViewPort::OnStartCounting()
 
 void CLiteOnViewPort::OnFinishCounting()
 {
+	m_FaceIcon->SetFaceState(FINISH);
 	float _grade = m_TimeCounting->EndCounting();
 	m_TimeCounting->m_bVisible = false;
 	m_VolumeMeter->SetSTATE(V_FINISH);

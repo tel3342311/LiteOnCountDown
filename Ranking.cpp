@@ -70,6 +70,11 @@ CRanking::CRanking(CControlBase*parent) : CControlBase(parent)
 
 CRanking::~CRanking()
 {
+	for (int i = 0; i < 2; i++) {
+		SAFE_RELEASE(m_coin_bg[i]);
+	}
+	SAFE_DELETE(m_coin_bg);
+
 	SAFE_RELEASE(m_pRankBG);
 
 	for (int i = 0; i < 5; i++) {
@@ -135,10 +140,12 @@ void CRanking::Render(ID2D1DeviceContext*d2ddc)
 			float headOffset = 0;
 			if (i % 4 == 0)
 				headOffset = CResolution::m_screenResolutionY / 54.f;
+			else if (i == 1 || i == 5)
+				headOffset = CResolution::m_screenResolutionY / 59.f;
 			if ( i < 4 )
-				d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 10.66f, CResolution::m_screenResolutionY / 6.35f * i + headOffset) * _world);
+				d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 10.66f, CResolution::m_screenResolutionY / 6.3f * i + headOffset) * _world);
 			else
-				d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 1.67f, CResolution::m_screenResolutionY / 6.35f * (i - 4) + headOffset) * _world);
+				d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 1.67f, CResolution::m_screenResolutionY / 6.3f * (i - 4) + headOffset) * _world);
 			d2ddc->DrawBitmap(m_ppTeamTitle[_nIdx]);
 		}
 
