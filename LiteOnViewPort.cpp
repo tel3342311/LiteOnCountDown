@@ -10,7 +10,7 @@ static int getCoinFlashFast();
 static int countingStartState = 1;
 static int countingFinish = 0;
 static int sShowFinish = 60;
-static int sShowGrade = 60;
+static int sShowGrade = 0;
 static VOLUME_STATE sState = V_START;
 void WINAPI OnFinishCallBack(UINT nIDEvent, void* pUserContext);
 void WINAPI OnFinishGradeCallBack(UINT nIDEvent, void* pUserContext);
@@ -241,8 +241,19 @@ void CLiteOnViewPort::Render(ID2D1DeviceContext*d2ddc)
 		m_FaceIcon->Render(d2ddc);
 
 	if (m_TimeCounting != NULL)
+	{
+		if (sShowGrade > 0)
+		{
+			m_TimeCounting->SetOpacity((1.f - sShowGrade / 60.f));
+			m_TimeCounting->SetScale(1.f - sShowGrade / 60.f, 1.f - sShowGrade / 60.f);
+		}
+		else {
+			m_TimeCounting->SetOpacity(1.f);
+			m_TimeCounting->SetScale(1.f, 1.f);
+
+		}
 		m_TimeCounting->Render(d2ddc);
-		
+	}
 }
 
 bool CLiteOnViewPort::HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam)
@@ -451,6 +462,7 @@ void CLiteOnViewPort::ShowGrade()
 {
 	m_TimeCounting->m_bVisible = true;
 	m_TimeCounting->SetLocation(CResolution::m_screenResolutionX / 2.74f, CResolution::m_screenResolutionY / 3.32f);
+	
 	m_VolumeMeter->SetSTATE(SHOW_GRADE);
 	m_bFlashFast = true;
 	//DXUTKillTimer(m_nIDEvent);

@@ -49,6 +49,9 @@ void CTimeCounting::Render(ID2D1DeviceContext*d2ddc) {
 	//angle
 	_m = D2D1::Matrix3x2F::Rotation(m_angle);
 	_world = _m * _world;
+	//scale 
+	_m = D2D1::Matrix3x2F::Scale(m_scale.x, m_scale.y);
+	_world = _m * _world;
 	d2ddc->SetTransform(_world);
 
 	//save transform
@@ -59,21 +62,22 @@ void CTimeCounting::Render(ID2D1DeviceContext*d2ddc) {
 	float _o = m_opacity * GetParentOpacity();
 
 	d2ddc->SetTransform(_world);
+	
 	UpdateDigit();
 	if (m_ppDigitBitmap[m_pDigit[0]] != NULL)
-		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[0]]);
+		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[0]], 0, _o);
 	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f, 0) * _world);
 	if (m_ppDigitBitmap[m_pDigit[1]] != NULL)
-		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[1]]);
+		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[1]], 0, _o);
 	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f * 2, 0) * _world);
 	if (m_pSemiColon != NULL)
-		d2ddc->DrawBitmap(m_pSemiColon);
+		d2ddc->DrawBitmap(m_pSemiColon, 0, _o);
 	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f * 3, 0) * _world);
 	if (m_ppDigitBitmap[m_pDigit[2]] != NULL)
-		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[2]]);
+		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[2]], 0, _o);
 	d2ddc->SetTransform(D2D1::Matrix3x2F::Translation(CResolution::m_screenResolutionX / 9.f * 4, 0) * _world);
 	if (m_ppDigitBitmap[m_pDigit[3]] != NULL)
-		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[3]]);
+		d2ddc->DrawBitmap(m_ppDigitBitmap[m_pDigit[3]], 0, _o);
 
 	SetTransform(&_world);
 	SetInverse(&_world);
